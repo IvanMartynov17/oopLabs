@@ -1,4 +1,4 @@
 ﻿using Task1;
 
 Console.WriteLine("Hello, World!");
-Task4.Run();
+Task5.Run();
