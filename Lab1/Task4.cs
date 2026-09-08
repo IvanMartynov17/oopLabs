@@ -1,6 +1,6 @@
 ﻿namespace Task1;
 
-public class Task4
+public static class Task4
 {
     public static void Run()
     {
@@ -15,20 +15,20 @@ public class Task4
         if (systolic < 120 && diastolic < 80)
         {
             category = "Normal";
-            Console.WriteLine($"Category: {category}");
+            Console.WriteLine($"Тиск:{systolic}/{diastolic} - {category}");
         }else if (systolic < 130 && diastolic < 80)
         {
             category = "Increased";
-            Console.WriteLine($"Category: {category}");
+            Console.WriteLine($"Тиск:{systolic}/{diastolic} - {category}");
         }else if (systolic < 140 && diastolic < 90)
         {
             category = "1Stage hypertension";
-            Console.WriteLine($"Category: {category}");
+            Console.WriteLine($"Тиск:{systolic}/{diastolic} - {category}");
         }
         else
         {
             category = "2Stage hypertension";
-            Console.WriteLine($"Category: {category}");
+            Console.WriteLine($"Тиск:{systolic}/{diastolic} - {category}");
         }
     }
 }
