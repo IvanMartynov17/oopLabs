@@ -1,6 +1,6 @@
 ﻿namespace Task1;
 
-public class Task7
+public static class Task7
 {
     public static void Run()
     {
@@ -21,66 +21,56 @@ public class Task7
         }
 
         decimal sum = 0;
-        foreach (decimal sessionPrices in price)
-        {
-         sum += sessionPrices;
-        }
-        Console.WriteLine($"The total price of {N} is {sum}");
-        
-        decimal minNumber = price[0];
-        foreach (decimal sessionPrices in price)
-        {
-            if (sessionPrices < minNumber)
-            {
-                minNumber = sessionPrices;
-                
-            }
-        }
-        Console.WriteLine("Minimum number is {0}", minNumber);
-        
         decimal maxNumber = price[0];
-        foreach (decimal sessionPrices in price)
+        decimal minNumber = price[0];
+        
+        foreach (decimal sessionPrice in price)
         {
-            if (sessionPrices > maxNumber)
-                {
-                maxNumber = sessionPrices;
-                }
+         sum += sessionPrice;
+         if (sessionPrice < minNumber)
+         {
+             minNumber = sessionPrice;
+         }
+         if (sessionPrice > maxNumber)
+             {
+             maxNumber = sessionPrice;
+             }
         }
-        Console.WriteLine("Maximum number is {0}", maxNumber);
-
         decimal average = sum / N;
+        
+        Console.WriteLine("Minimum number is {0}", minNumber);
+        Console.WriteLine("Maximum number is {0}", maxNumber);
         Console.WriteLine("Average number is {0}", average);
 
-        int n = 0, count = 0;
-        while (n < N)
+        int idx = 0, firstIndexGreater1000 = -1;
+        while (idx < N)
         {
-            if (price[n] > 1000)
+            if (price[idx] > 1000)
             {
-                count++;
+                firstIndexGreater1000 = idx;
+                break;
             }
-            n++;
+            idx++;
         }
-        Console.WriteLine($"Prices more than 1000 is {count}");
-        if (count == 0)
+        int aboveAverageCount = 0;
+        for (int i = 0; i < N; i++)
         {
-            Console.WriteLine("None");
+            if (price[i] > average)
+            {
+                aboveAverageCount++;
+            }
         }
-
-        n = 0;
-        int moreThanAverage = 0;
-        if (price[n] > average)
+        if (firstIndexGreater1000 != -1)
         {
-            moreThanAverage++;
-        }
-
-        if (moreThanAverage == 0)
-        {
-            Console.WriteLine("No more than average");
+            int ordinalNumber = firstIndexGreater1000 + 1;
+            decimal firstValue = price[firstIndexGreater1000];
+            Console.WriteLine($"Перший > 1000: #({ordinalNumber} - {firstValue:F2 )} грн");
         }
         else
         {
-            Console.WriteLine($"Numbers more than average: {moreThanAverage}");
+            Console.WriteLine($"Перший > 1000: немає");
         }
+        Console.WriteLine("========================");
     }
     
 
