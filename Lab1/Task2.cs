@@ -2,7 +2,7 @@
 
 namespace Task1;
 
-public class Task2
+public static class Task2
 {
     public static void Run()
     {
@@ -19,6 +19,6 @@ public class Task2
         discount = int.Parse(Console.ReadLine());
         
         result = price * count * (1 - discount / 100.0);
-        Console.Write($"Result: {result:F2}");
+        Console.Write($"Сума: {result:F2}");
     }
 }
