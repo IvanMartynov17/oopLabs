@@ -1,6 +1,6 @@
 ﻿namespace Task1;
 
-public class Task6
+public static class Task6
 {
     public static void Run()
     {
@@ -12,20 +12,30 @@ public class Task6
 
         string last = lastDigit switch
         {
-            0 or 1 => "Therapy",
-            2 or 3 => "Surgeon",
-            4 or 5 => "Cardio",
-            6 or 7 => "Neurosurgeon",
-            8 or 9 => "Opthalmologist",
+            0 or 1 => "Відділення 'загальна терапія'",
+            2 or 3 => "Відділення 'хірургія'",
+            4 or 5 => "Відділення 'кардіологія'",
+            6 or 7 => "Відділення 'неврологія'",
+            8 or 9 => "Відділення 'офтальмологія'",
             _ => "Invalid number"
         };
         Console.WriteLine(last);
         if (cardNumber % 2 == 0)
         {
-            Console.WriteLine("PilgCard");
-        }else if (cardNumber % 3 == 0)
+            Console.WriteLine("Пільгова картка: так");
+        }
+        else
         {
-            Console.WriteLine("QueueView");
+            Console.WriteLine("Пільгова картка: ні"); 
+        }
+        
+        if (cardNumber % 3 == 0)
+        {
+            Console.WriteLine("Черговий огляк: так");
+        }
+        else
+        {
+            Console.WriteLine("Черговий огляк: ні");
         }
     }
 }
