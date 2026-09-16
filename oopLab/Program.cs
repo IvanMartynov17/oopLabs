@@ -4,4 +4,4 @@ using Lab1;
 
 Console.WriteLine("Hello, World!");
 
-Task7.Run();
+Task8.Run();
