@@ -110,3 +110,20 @@ Console.WriteLine();
 
 Console.WriteLine($"Записи пацієнта #{p2.Id}:");
 appointmentManager.DisplayList(appointmentManager.GetByPatient(p2.Id));
+
+Clinic clinic = new Clinic("Медична Клініка");
+Console.WriteLine("Майбутні записи:");
+clinic.Appointments.DisplayList(clinic.Appointments.GetUpcoming());
+
+Console.WriteLine();
+clinic.Appointments.Cancel(1);
+
+Console.WriteLine();
+Console.WriteLine($"Записи пацієнта #{p2.Id}:");
+clinic.Appointments.DisplayList(clinic.Appointments.GetByPatient(p2.Id));
+
+Console.WriteLine("\n" + new string('-', 50) + "\n");
+
+Console.WriteLine();
+
+clinic.GenerateReport();
