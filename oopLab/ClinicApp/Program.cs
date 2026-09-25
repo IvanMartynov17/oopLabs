@@ -21,3 +21,18 @@ Console.WriteLine("\tСписок лікарів");
 Console.WriteLine(d1);
 Console.WriteLine(d2);
 Console.WriteLine(d3);
+
+Console.WriteLine("\t Записи \t");
+
+PatientManager manager = new PatientManager();
+manager.Add(p1);
+manager.Add(p2);
+manager.Add(p3);
+manager.Add(p4);
+manager.Add(p5);
+
+Console.WriteLine("\n\tВивід усіх пацієнтів через PatientManager:");
+manager.DisplayAll();
+
+Console.WriteLine("\n\tСтатистика:");
+manager.DisplayStats();
