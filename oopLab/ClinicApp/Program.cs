@@ -89,3 +89,24 @@ Console.WriteLine($"Запис #{a3.Id} завершено: {a3}");
 
 a2.Cancel("Пацієнт захворів");
 Console.WriteLine($"Запис #{a2.Id} скасовано: {a2}");
+
+AppointmentManager appointmentManager = new AppointmentManager(pm, doctorManager);
+
+appointmentManager.Book(p1.Id, d1.Id, new DateTime(2026, 5, 9, 10, 0, 0), 30);
+appointmentManager.Book(p2.Id, d2.Id, new DateTime(2026, 5, 9, 11, 0, 0), 45);
+appointmentManager.Book(p3.Id, d3.Id, new DateTime(2026, 5, 10, 9, 0, 0), 20);
+
+appointmentManager.Book(99, d1.Id, new DateTime(2026, 5, 9, 12, 0, 0));
+Console.WriteLine();
+
+Console.WriteLine("Майбутні записи:");
+appointmentManager.DisplayList(appointmentManager.GetUpcoming());
+
+Console.WriteLine();
+
+appointmentManager.Cancel(1);
+
+Console.WriteLine();
+
+Console.WriteLine($"Записи пацієнта #{p2.Id}:");
+appointmentManager.DisplayList(appointmentManager.GetByPatient(p2.Id));
