@@ -24,15 +24,52 @@ Console.WriteLine(d3);
 
 Console.WriteLine("\t Записи \t");
 
-PatientManager manager = new PatientManager();
-manager.Add(p1);
-manager.Add(p2);
-manager.Add(p3);
-manager.Add(p4);
-manager.Add(p5);
+PatientManager pm = new PatientManager();
+pm.Add(p1);
+pm.Add(p2);
+pm.Add(p3);
+pm.Add(p4);
+pm.Add(p5);
 
-Console.WriteLine("\n\tВивід усіх пацієнтів через PatientManager:");
-manager.DisplayAll();
+Console.WriteLine("\n\tВивід усіх пацієнтів:");
+pm.DisplayAll();
 
 Console.WriteLine("\n\tСтатистика:");
-manager.DisplayStats();
+pm.DisplayStats();
+
+DoctorManager doctorManager = new DoctorManager();
+
+Console.WriteLine("\n\t Додавання ");
+doctorManager.Add(d1);
+doctorManager.Add(d2);
+doctorManager.Add(d3);
+
+Console.WriteLine("\n=== Список ");
+doctorManager.DisplayAll();
+
+Console.WriteLine("\n\t Статистика ");
+doctorManager.DisplayStats();
+
+Console.WriteLine("\n\tПошук та видалення ");
+
+string spec = "Кардіологія";
+Console.WriteLine($"\n\tПошук за спеціальністю \"{spec}\" ");
+Doctor[] cardiologists = doctorManager.FindBySpeciality(spec);
+foreach (var doc in cardiologists)
+{
+    Console.WriteLine($"Знайдено: [{doc.Id}] {doc.FullName} ({doc.Specialty})");
+}
+
+Console.WriteLine($"\n\tПошук лікаря ID ({d1.Id}) ");
+Doctor? foundDoctor = doctorManager.FindById(d1.Id);
+if (foundDoctor != null)
+{
+    Console.WriteLine($"Знайдено: {foundDoctor.FullName}, Ліцензія: {foundDoctor.LicenseNumber}");
+}
+
+Console.WriteLine($"\n\tВидалення лікаря з ID ({d2.Id})");
+bool isDoctorRemoved = doctorManager.Remove(d2.Id);
+Console.WriteLine(isDoctorRemoved ? "Лікаря успішно видалено!" : "Лікаря не знайдено.");
+
+Console.WriteLine("\n\tОновленний список");
+doctorManager.DisplayAll();
