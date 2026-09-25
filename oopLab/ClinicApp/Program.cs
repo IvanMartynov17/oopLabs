@@ -73,3 +73,19 @@ Console.WriteLine(isDoctorRemoved ? "Лікаря успішно видален�
 
 Console.WriteLine("\n\tОновленний список");
 doctorManager.DisplayAll();
+
+Appointment a1 = new Appointment(p1.Id, d1.Id, DateTime.Now.AddDays(1).AddHours(2), 30);
+Appointment a2 = new Appointment(p2.Id, d2.Id, DateTime.Now.AddDays(2).AddHours(1), 45);
+Appointment a3 = new Appointment(p1.Id, d2.Id, DateTime.Now.AddHours(-5), 20); 
+
+Console.WriteLine("Початкові записи:");
+Console.WriteLine(a1);
+Console.WriteLine(a2);
+Console.WriteLine(a3);
+Console.WriteLine("\n\t Зміна статусів ");
+
+a3.Complete();
+Console.WriteLine($"Запис #{a3.Id} завершено: {a3}");
+
+a2.Cancel("Пацієнт захворів");
+Console.WriteLine($"Запис #{a2.Id} скасовано: {a2}");
