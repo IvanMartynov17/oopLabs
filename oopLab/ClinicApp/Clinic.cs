@@ -44,7 +44,7 @@ public class Clinic
                 }
             }
 
-            Console.WriteLine($"{allDoctors[i].FullName} ({allDoctors[i].Specialty}): {count} записів");
+            Console.WriteLine($"  {allDoctors[i].FullName} ({allDoctors[i].Specialty}): {count} записів");
         }
     }
 }

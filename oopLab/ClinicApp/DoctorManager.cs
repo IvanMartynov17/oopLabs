@@ -16,7 +16,7 @@ public class DoctorManager
 
     public void Add(Doctor doctor)
     {
-        if (_count > MaxDoctors)
+        if (_count >= MaxDoctors)
         {
             Console.WriteLine("Досягнуто ліміт.");
             return;
@@ -41,12 +41,12 @@ public class DoctorManager
 
     public Doctor[] FindBySpeciality(string speciality)
     {
-        string lower = speciality.ToLower();
+        string lower = speciality?.ToLower() ?? string.Empty;
 
         int matches = 0;
         for (int i = 0; i < _count; i++)
         {
-            if (_doctors[i].Specialty.ToLower() == lower)
+            if (_doctors[i].Specialty.ToString().ToLower() == lower)
             {
                 matches++;
             }
@@ -56,7 +56,7 @@ public class DoctorManager
         int index = 0;
         for (int i = 0; i < _count; i++)
         {
-            if (_doctors[i].Specialty.ToLower() == lower)
+            if (_doctors[i].Specialty.ToString().ToLower() == lower)
             {
                 result[index] = _doctors[i];
                 index++;
@@ -139,12 +139,12 @@ public class DoctorManager
 
         for (int i = 0; i < _count; i++)
         {
-            string speciality = _doctors[i].Specialty;
+            string speciality = _doctors[i].Specialty.ToString();
 
             bool alreadySeen = false;
             for (int j = 0; j < i; j++)
             {
-                if (_doctors[j].Specialty.ToLower() == speciality.ToLower())
+                if (_doctors[j].Specialty.ToString().ToLower() == speciality.ToLower())
                 {
                     alreadySeen = true;
                     break;
@@ -156,7 +156,7 @@ public class DoctorManager
             int countWithSpeciality = 0;
             for (int j = 0; j < _count; j++)
             {
-                if (_doctors[j].Specialty.ToLower() == speciality.ToLower())
+                if (_doctors[j].Specialty.ToString().ToLower() == speciality.ToLower())
                 {
                     countWithSpeciality++;
                 }

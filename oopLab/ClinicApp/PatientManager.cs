@@ -46,7 +46,7 @@ public class PatientManager
         for (int i = 0; i < _count; i++)
         {
             if (_patients[i].FirstName.ToLower().Contains(search) ||
-                _patients[i].LastName.ToLower().Contains(search));
+                _patients[i].LastName.ToLower().Contains(search))
             {
                 matches++;
             }
@@ -68,7 +68,7 @@ public class PatientManager
 
     public bool Remove(int id)
     {
-        int targetIndex = 0;
+        int targetIndex = -1;
         for (int i = 0; i < _count; i++)
         {
             if (_patients[i].Id == id)
@@ -78,7 +78,7 @@ public class PatientManager
             }
         }
 
-        if (targetIndex == 0)
+        if (targetIndex == -1)
         {
             return false;
         }
@@ -88,7 +88,7 @@ public class PatientManager
             _patients[i] = _patients[i + 1];
         }
         
-        _patients[_count - 1] = null;
+        _patients[_count - 1] = null!;
         _count--;
         return true;
     }

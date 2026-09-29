@@ -6,7 +6,7 @@ public class Doctor
     public int Id { get; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
-    public string Specialty { get; set; }
+    public Speciality Specialty { get; set; }
     public string LicenseNumber { get; set; }
     public string Phone { get; set; }
     public int WorkStartHour { get; set; }
@@ -36,7 +36,7 @@ public class Doctor
     }
 
     public bool IsAvailableNow => CanAcceptAt(DateTime.Now.Hour);
-    public Doctor(string firstName, string lastName, string specialty, string licenceNumber, 
+    public Doctor(string firstName, string lastName, Speciality specialty, string licenceNumber, 
         string phone, int workStartHour, int workEndHour)
     {
         Id = _nextID++;
@@ -48,13 +48,13 @@ public class Doctor
         WorkStartHour = workStartHour;
         WorkEndHour = workEndHour;
     }
-    public Doctor(string firstName, string lastName, string specialty, string licenceNumber, string phone)
+    public Doctor(string firstName, string lastName, Speciality specialty, string licenceNumber, string phone)
         : this(firstName, lastName, specialty, licenceNumber, phone, 9, 17)
     {
         
     }
 
-    public Doctor(string firstName, string lastName, string specialty)
+    public Doctor(string firstName, string lastName, Speciality specialty)
         : this(firstName, lastName, specialty, "Невідомо", "Невідомо", 9, 17)
     {
     }

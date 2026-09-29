@@ -1,8 +1,8 @@
 ﻿using Lab1;
 
-Patient p1 = new Patient("Iван", "Петренко", new DateTime(1985, 8, 9), "A+", "A+", "0501234567", "");
-Patient p2 = new Patient("Олена", "Коваль", new DateTime(1993, 9, 10), "B-", "B-", "0672345678", "");
-Patient p3 = new Patient("Максим", "Бойко", new DateTime(2010, 8, 9), "O+", "O+", "0933456789", "");
+Patient p1 = new Patient("Iван", "Петренко", new DateTime(1985, 8, 9), "A+", BloodType.APositive, "0501234567", "");
+Patient p2 = new Patient("Олена", "Коваль", new DateTime(1993, 9, 10), "B-", BloodType.BNegative, "0672345678", "");
+Patient p3 = new Patient("Максим", "Бойко", new DateTime(2010, 8, 9), "O+", BloodType.ONegative, "0933456789", "");
 Patient p4 = new Patient("Олена", "Коваль", new DateTime(2010, 9, 10), " " ,"0000000000");
 Patient p5 = new Patient("Марія", "Ткач", new DateTime(2000, 7, 17), " ", "0000000000");
 
@@ -13,9 +13,9 @@ Console.Write(p3);
 Console.Write(p4);
 Console.Write(p5);
 
-Doctor d1 = new Doctor("Олег", "Сидоренко", "Кардіологія", "LIC-001", "0441234567",  8, 16);
-Doctor d2 = new Doctor("Наталія", "Мороз", "Неврологія", "LIC-002", "0442345678",  9, 18);
-Doctor d3 = new Doctor("Андрій", "Власенко", "Педіатрія", "LIC-003", "0443456789", 8, 17);
+Doctor d1 = new Doctor("Олег", "Сидоренко", Speciality.Cardiology, "LIC-001", "0441234567",  8, 16);
+Doctor d2 = new Doctor("Наталія", "Мороз", Speciality.Neurology, "LIC-002", "0442345678",  9, 18);
+Doctor d3 = new Doctor("Андрій", "Власенко", Speciality.Pediatrics, "LIC-003", "0443456789", 8, 17);
 
 Console.WriteLine("\tСписок лікарів");
 Console.WriteLine(d1);
@@ -95,8 +95,6 @@ AppointmentManager appointmentManager = new AppointmentManager(pm, doctorManager
 appointmentManager.Book(p1.Id, d1.Id, new DateTime(2026, 5, 9, 10, 0, 0), 30);
 appointmentManager.Book(p2.Id, d2.Id, new DateTime(2026, 5, 9, 11, 0, 0), 45);
 appointmentManager.Book(p3.Id, d3.Id, new DateTime(2026, 5, 10, 9, 0, 0), 20);
-
-appointmentManager.Book(99, d1.Id, new DateTime(2026, 5, 9, 12, 0, 0));
 Console.WriteLine();
 
 Console.WriteLine("Майбутні записи:");
@@ -112,18 +110,19 @@ Console.WriteLine($"Записи пацієнта #{p2.Id}:");
 appointmentManager.DisplayList(appointmentManager.GetByPatient(p2.Id));
 
 Clinic clinic = new Clinic("Медична Клініка");
-Console.WriteLine("Майбутні записи:");
-clinic.Appointments.DisplayList(clinic.Appointments.GetUpcoming());
+
+
+clinic.Patients.Add(p1);
+clinic.Patients.Add(p2);
+
+clinic.Doctors.Add(d1);
+clinic.Doctors.Add(d2);
+
+clinic.Appointments.Book(p1.Id, d1.Id, DateTime.Now.AddDays(1), 30);
+clinic.Appointments.Book(p2.Id, d2.Id, DateTime.Now.AddDays(2), 45);
 
 Console.WriteLine();
-clinic.Appointments.Cancel(1);
+clinic.DisplaySchedule(DateTime.Now.AddDays(1));
 
 Console.WriteLine();
-Console.WriteLine($"Записи пацієнта #{p2.Id}:");
-clinic.Appointments.DisplayList(clinic.Appointments.GetByPatient(p2.Id));
-
-Console.WriteLine("\n" + new string('-', 50) + "\n");
-
-Console.WriteLine();
-
 clinic.GenerateReport();
