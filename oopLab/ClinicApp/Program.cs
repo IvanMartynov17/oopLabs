@@ -133,3 +133,11 @@ WorkSchedule evening = new WorkSchedule(14, 22);
 Console.WriteLine(morning);  
 Console.WriteLine(morning.IsNow);
 WorkSchedule copy = morning;
+
+Console.WriteLine(ClinicFormatter.FormatBloodType(BloodType.APositive)); 
+Console.WriteLine(ClinicFormatter.FormatAge(1));   
+Console.WriteLine(ClinicFormatter.FormatAge(3));  
+Console.WriteLine(ClinicFormatter.FormatAge(11));
+
+Patient first = clinic.Patients[0];
+Doctor second = clinic.Doctors[1];
