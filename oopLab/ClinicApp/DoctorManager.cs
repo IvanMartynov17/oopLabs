@@ -43,6 +43,12 @@ public class DoctorManager
         }
         return null;
     }
+    
+    public bool TryFindById(int id, out Doctor? doctor)
+    {
+        doctor = FindById(id);
+        return doctor != null;
+    }
 
     public Doctor[] FindBySpeciality(string speciality)
     {
@@ -106,7 +112,23 @@ public class DoctorManager
         _count--;
         return true;
     }
+    
+    public Doctor[] FindBySpeciality(Speciality speciality)
+    {
+        int matches = 0;
+        for (int i = 0; i < _count; i++)
+        {
+            if (_doctors[i].Specialty == speciality) matches++;
+        }
 
+        Doctor[] result = new Doctor[matches];
+        int index = 0;
+        for (int i = 0; i < _count; i++)
+        {
+            if (_doctors[i].Specialty == speciality) result[index++] = _doctors[i];
+        }
+        return result;
+    }
     public void DisplayAll()
     {
         if (_count == 0)

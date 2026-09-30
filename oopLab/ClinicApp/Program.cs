@@ -54,8 +54,9 @@ Console.WriteLine("\n\tПошук та видалення ");
 
 string spec = "Кардіологія";
 Console.WriteLine($"\n\tПошук за спеціальністю \"{spec}\" ");
-Doctor[] cardiologists = doctorManager.FindBySpeciality(spec);
-foreach (var doc in cardiologists)
+
+Doctor[] cardiologistsSearch = doctorManager.FindBySpeciality(spec);
+foreach (var doc in cardiologistsSearch)
 {
     Console.WriteLine($"Знайдено: [{doc.Id}] {doc.FullName} ({doc.Specialty})");
 }
@@ -141,3 +142,15 @@ Console.WriteLine(ClinicFormatter.FormatAge(11));
 
 Patient first = clinic.Patients[0];
 Doctor second = clinic.Doctors[1];
+
+Doctor[] cardiologists = clinic.Doctors.FindBySpeciality(Speciality.Cardiology);  
+Doctor[] found = clinic.Doctors.FindBySpeciality("кардіо");                 
+
+Appointment[] today = clinic.Appointments.GetByDate(2026, 5, 10); 
+
+if (clinic.Patients.TryFindById(3, out Patient patient))
+    Console.WriteLine("Знайдено: " + patient.FullName);
+else
+    Console.WriteLine("Пацієнта не знайдено.");
+string name = clinic.Patients.FindById(99)?.FullName ?? "не знайдено";
+Console.WriteLine(name);  

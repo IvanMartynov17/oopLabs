@@ -11,7 +11,33 @@ public class PatientManager
         get => _patients[index]; 
         set => _patients[index] = value;
     }
-    
+    public bool TryFindById(int id, out Patient? patient)
+    {
+        patient = FindById(id);
+        return patient != null;
+    }
+    public Patient[] FindByBloodType(BloodType bloodType)
+    {
+        int matches = 0;
+        for (int i = 0; i < _count; i++)
+        {
+            if (_patients[i].BloodType == bloodType)
+            {
+                matches++;
+            }
+        }
+
+        Patient[] result = new Patient[matches];
+        int index = 0;
+        for (int i = 0; i < _count; i++)
+        {
+            if (_patients[i].BloodType == bloodType)
+            {
+                result[index++] = _patients[i];
+            }
+        }
+        return result;
+    }
     public PatientManager()
     {}
     public void Add(Patient patient)
@@ -30,11 +56,11 @@ public class PatientManager
     }
     public Patient? FindById(int id)
     {
-        foreach (var patient in _patients)
+        for (int i = 0; i < _count; i++)
         {
-            if (patient.Id == id)
+            if (_patients[i].Id == id)
             {
-                return patient;
+                return _patients[i];
             }
         }
         return null;
