@@ -6,6 +6,11 @@ public class DoctorManager
     private Doctor[] _doctors = new Doctor[MaxDoctors];
     private int _count = 0;
 
+    public Doctor this[int index]
+    {
+        get => _doctors [index];
+        set => _doctors[index] = value;
+    }
     public int Count
     {
         get
@@ -164,7 +169,7 @@ public class DoctorManager
 
             Console.WriteLine($"  {speciality}: {countWithSpeciality}");
         }
-
-        Console.WriteLine("==========================");
+        
+    Console.WriteLine("==========================");
     }
 }

@@ -6,7 +6,14 @@ public class PatientManager
     private Patient[] _patients = new Patient[MaxPatients];
     private int _count;
     public int Count => _count;
-
+    public Patient this[int index] 
+    {
+        get => _patients[index]; 
+        set => _patients[index] = value;
+    }
+    
+    public PatientManager()
+    {}
     public void Add(Patient patient)
     {
         if (_count > MaxPatients)
