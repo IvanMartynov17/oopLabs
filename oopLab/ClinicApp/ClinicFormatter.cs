@@ -42,7 +42,7 @@ public static class ClinicFormatter
     {
         int mod100 = age % 100;
         int mod10 = age % 10;
-        
+
         if (mod100 >= 11 && mod100 <= 19)
         {
             return $"{age} років";
@@ -51,9 +51,7 @@ public static class ClinicFormatter
         return mod10 switch
         {
             1 => $"{age} рік",
-            2 => $"{age} роки",
-            3 => $"{age} роки",
-            4 => $"{age} роки",
+            2 or 3 or 4 => $"{age} роки",
             _ => $"{age} років"
         };
     }
