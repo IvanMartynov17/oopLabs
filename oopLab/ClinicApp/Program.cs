@@ -126,3 +126,10 @@ clinic.DisplaySchedule(DateTime.Now.AddDays(1));
 
 Console.WriteLine();
 clinic.GenerateReport();
+
+WorkSchedule morning = new WorkSchedule(8, 16);
+WorkSchedule evening = new WorkSchedule(14, 22);
+
+Console.WriteLine(morning);  
+Console.WriteLine(morning.IsNow);
+WorkSchedule copy = morning;
