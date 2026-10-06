@@ -6,11 +6,19 @@ public class Appointment
 {
     private static int _nextId = 1;
 
+    private int _durationMinutes = 0;
+
+    public int DurationMinutes
+    {
+        get => _durationMinutes;
+        set => _durationMinutes = value;
+    }
+
     public int Id { get; }
     public int PatientId { get; }
     public int DoctorId { get; }
     public DateTime ScheduledAt { get; set; }
-    public int DurationMinutes { get; set; }
+    
     public AppointmentStatus Status { get; private set; }
     public string Notes { get; private set; }
 
