@@ -9,6 +9,7 @@ public class Patient
     private string _lastName = string.Empty;
     private  string _phone = string.Empty;
     private DateTime _dateOfBirth;
+    private string _email = string.Empty;
 
     public string FirstName
     {
@@ -52,7 +53,15 @@ public class Patient
 
     
     public  BloodType BloodType { get; set; }
-    public  string Email { get; set; }
+    public string Email
+    {
+        get => _email;
+        set
+        {
+            ClinicValidator.ValidateEmail(value);
+            _email = value;
+        }
+    }
     public string FullName
     {
         get
