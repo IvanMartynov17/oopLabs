@@ -1,4 +1,4 @@
-﻿namespace Lab1;
+﻿namespace ClinicApp.Enums;
 
 public enum BloodType
 {

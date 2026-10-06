@@ -1,4 +1,6 @@
-﻿namespace Lab1;
+﻿using ClinicApp.Enums;
+
+namespace ClinicApp.Models;
 
 public class Appointment
 {

@@ -1,5 +1,9 @@
-﻿namespace Lab1;
+﻿using ClinicApp.Models;
+using ClinicApp.Enums;
+using ClinicApp.Managers;
+using ClinicApp.Utils;
 
+namespace ClinicApp;
 public class Clinic
 {
     public string Name { get; }

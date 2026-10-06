@@ -1,5 +1,6 @@
-﻿namespace Lab1;
+﻿using ClinicApp.Enums;
 
+namespace ClinicApp.Models;
 public class Patient
 {
     private static int _nextID = 1;
