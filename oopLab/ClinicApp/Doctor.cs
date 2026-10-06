@@ -3,71 +3,65 @@
 public class Doctor
 {
     private static int _nextID = 1;
+
     public int Id { get; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
-    public string Specialty { get; set; }
+    public Speciality Specialty { get; set; }
     public string LicenseNumber { get; set; }
     public string Phone { get; set; }
-    public int WorkStartHour { get; set; }
-    public int WorkEndHour { get; set; }
-    public string FullName
-    {
-        get
-        {
-            return $"{FirstName} {LastName}";
-        }
-    }
+    public WorkSchedule Schedule { get; set; }
 
-    public int WorkingHoursPerDay
-    {
-        get
-        {
-            return WorkEndHour - WorkStartHour;
-        }   
-    }
+    public string FullName => $"{FirstName} {LastName}";
+    public bool IsAvailableNow => Schedule.IsNow;
 
-    public string WorkSchedule
-    {
-        get
-        {
-            return $"{WorkStartHour} - {WorkEndHour}";
-        }
-    }
-
-    public bool IsAvailableNow => CanAcceptAt(DateTime.Now.Hour);
-    public Doctor(string firstName, string lastName, string specialty, string licenceNumber, 
-        string phone, int workStartHour, int workEndHour)
+    public int WorkingHoursPerDay => Schedule.HoursPerDay;
+    public Doctor(
+        string firstName, 
+        string lastName, 
+        Speciality specialty, 
+        string licenseNumber, 
+        string phone, 
+        WorkSchedule schedule)
     {
         Id = _nextID++;
         FirstName = firstName;
         LastName = lastName;
         Specialty = specialty;
-        LicenseNumber = licenceNumber;
+        LicenseNumber = licenseNumber;
         Phone = phone;
-        WorkStartHour = workStartHour;
-        WorkEndHour = workEndHour;
+        Schedule = schedule;
     }
-    public Doctor(string firstName, string lastName, string specialty, string licenceNumber, string phone)
-        : this(firstName, lastName, specialty, licenceNumber, phone, 9, 17)
+    public Doctor(
+        string firstName, 
+        string lastName, 
+        Speciality specialty, 
+        string licenseNumber, 
+        string phone, 
+        int workStartHour, 
+        int workEndHour) 
+        : this(firstName, lastName, specialty, licenseNumber, phone, new WorkSchedule(workStartHour, workEndHour))
     {
-        
     }
 
-    public Doctor(string firstName, string lastName, string specialty)
+    public Doctor(string firstName, string lastName, Speciality specialty, string licenseNumber, string phone)
+        : this(firstName, lastName, specialty, licenseNumber, phone, 9, 17)
+    {
+    }
+
+    public Doctor(string firstName, string lastName, Speciality specialty)
         : this(firstName, lastName, specialty, "Невідомо", "Невідомо", 9, 17)
     {
     }
 
     public bool CanAcceptAt(int hour)
     {
-        return hour >= WorkStartHour && hour < WorkEndHour;
+        return Schedule.Contains(hour);
     }
-    
+
     public override string ToString()
     {
         string status = IsAvailableNow ? "Доступний зараз" : "Не в робочий час";
-        return $"[{Id}] {FirstName} {LastName} | {Specialty} " +
-               $"| {LicenseNumber} |  {Phone} | {WorkSchedule} {WorkingHoursPerDay} год | {status}";
+        return $"[{Id}] {FullName} | {Specialty} | {LicenseNumber} | {Phone} | {Schedule} ({Schedule.HoursPerDay} год) | {status}";
     }
 }

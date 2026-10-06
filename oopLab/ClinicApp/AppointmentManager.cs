@@ -200,4 +200,9 @@ public class AppointmentManager
         }
         return null;
     }
+    
+    public Appointment[] GetByDate(int year, int month, int day)
+    {
+        return GetByDate(new DateTime(year, month, day)); // Делегує на GetByDate(DateTime)[cite: 3]
+    }
 }

@@ -7,7 +7,7 @@ public class Patient
     public  string FirstName { get; set; }
     public  string LastName { get; set; }
     public  DateTime DateOfBirth { get; set; }
-    public  string BloodType { get; set; }
+    public  BloodType BloodType { get; set; }
     public  string Phone { get; set; }
     public  string Email { get; set; }
     public string FullName
@@ -41,7 +41,7 @@ public class Patient
     }
    
 
-    public Patient(string firstName, string lastName, DateTime dateOfBirth, string s, string bloodType, string phone,
+    public Patient(string firstName, string lastName, DateTime dateOfBirth, string s, BloodType bloodType, string phone,
         string email)
     {
         Id = _nextID++;
@@ -54,7 +54,7 @@ public class Patient
     }
 
     public Patient(string firstName, string lastName, DateTime dateOfBirth, string bloodType, string phone)
-        : this(firstName, lastName, dateOfBirth, "Невідомо", "Невiдомо", phone, string.Empty)
+        : this(firstName, lastName, dateOfBirth, "Невідомо", BloodType.Unknown, phone, string.Empty)
     {
     }
     public Patient(string firstName, string lastName, DateTime dateOfBirth)
