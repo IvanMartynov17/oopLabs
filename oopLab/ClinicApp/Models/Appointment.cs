@@ -11,7 +11,14 @@ public class Appointment
     public int DurationMinutes
     {
         get => _durationMinutes;
-        set => _durationMinutes = value;
+        set
+        {
+            if (value <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(DurationMinutes), "Тривалість запису має бути більшою за 0 хвилин.");
+            }
+            _durationMinutes = value;
+        }
     }
 
     public int Id { get; }
