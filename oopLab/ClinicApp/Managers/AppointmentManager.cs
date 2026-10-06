@@ -1,5 +1,6 @@
-﻿namespace Lab1;
-
+﻿using ClinicApp.Models;
+using ClinicApp.Enums;
+namespace ClinicApp.Managers;
 public class AppointmentManager
 {
     private const int MaxAppointments = 500;

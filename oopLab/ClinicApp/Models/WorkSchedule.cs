@@ -1,5 +1,4 @@
-﻿namespace Lab1;
-
+﻿namespace ClinicApp.Models;
 public readonly struct WorkSchedule
 {
     public int Start { get; }

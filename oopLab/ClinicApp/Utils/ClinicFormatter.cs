@@ -1,6 +1,7 @@
-﻿using System.Diagnostics;
+﻿using ClinicApp.Models;
+using ClinicApp.Enums;
 
-namespace Lab1;
+namespace ClinicApp.Utils;
 
 public static class ClinicFormatter
 {

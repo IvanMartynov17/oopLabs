@@ -1,16 +1,61 @@
-﻿namespace Lab1;
-
+﻿using ClinicApp.Enums;
+using ClinicApp.Utils;
+namespace ClinicApp.Models;
 public class Doctor
 {
     private static int _nextID = 1;
 
     public int Id { get; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public Speciality Specialty { get; set; }
-    public string LicenseNumber { get; set; }
-    public string Phone { get; set; }
-    public WorkSchedule Schedule { get; set; }
+    private string _firstName = string.Empty;
+    private string _lastName = string.Empty;
+    private string _licenseNumber = string.Empty;
+    private string _phone = string.Empty;
+
+    public string FirstName
+    {
+        get => _firstName;
+        set
+        {
+            ClinicValidator.ValidateName(value, nameof(FirstName));
+            _firstName = value;
+        }
+    }
+
+    public string LastName
+    {
+        get => _lastName;
+        set
+        {
+            ClinicValidator.ValidateName(value, nameof(FirstName));
+            _lastName = value;
+        }
+    }
+
+    public string LicenseNumber
+    {
+        get => _licenseNumber;
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new ArgumentException("Номер ліцензії не може бути порожнім.", nameof(LicenseNumber));
+            }
+            _licenseNumber = value;
+        }
+    }
+
+    public string Phone
+    {
+        get => _phone;
+        set
+        {
+            ClinicValidator.ValidatePhone(value);
+            _phone = value;
+        }
+    }
+
+    public Speciality Specialty;
+    public WorkSchedule Schedule;
 
     public string FullName => $"{FirstName} {LastName}";
     public bool IsAvailableNow => Schedule.IsNow;
