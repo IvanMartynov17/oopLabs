@@ -42,4 +42,5 @@ public abstract class MedicalRecord
             ? baseInfo 
             : $"{baseInfo} | {Notes}";
     }
+    
 }

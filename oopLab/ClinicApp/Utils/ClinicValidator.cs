@@ -46,12 +46,13 @@ public class ClinicValidator
         }
     }
     
-    public static void ValidatePositive(int value, string fieldName)
+    public static int ValidatePositive(int value, string fieldName)
     {
         if (value <= 0)
         {
             throw new ArgumentOutOfRangeException(fieldName, "Значення не може бути менше 0");
         }
+        return value;
     }
     
     public static void ValidateEmail(string email)

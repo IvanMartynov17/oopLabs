@@ -1,6 +1,66 @@
-﻿namespace ClinicApp.Models;
+﻿using ClinicApp.Utils;
 
-public class LabResult
+namespace ClinicApp.Models;
+
+public class LabResult : MedicalRecord
 {
-    
+   private string _testName = string.Empty;
+   private string _unit =  string.Empty;
+   private string _referenceRange = string.Empty;
+   
+   public string TestName {
+      get => _testName;
+      set
+      {
+         ClinicValidator.ValidateName(value, nameof(TestName)); 
+         _testName = value;
+      }
+   }
+   
+   public string Unit {
+      get => _unit;
+      set
+      {
+         ClinicValidator.ValidateName(value, nameof(Unit)); 
+         _unit = value;
+      }
+   }
+   
+   public string ReferenceRange {
+      get => _referenceRange;
+      set
+      {
+         ClinicValidator.ValidateName(value, nameof(ReferenceRange));
+         _testName = value;
+      }
+   }
+   
+   public double Value {get; set; }
+   public bool IsNormal {get; set; }
+   public LabResult(int patientId, int doctorId, DateTime date, 
+      string testName, double value, string unit, string referenceRange, bool isNormal) 
+      : base(patientId, doctorId, date)
+   {
+      TestName = testName;
+      Value = value;
+      Unit = unit;
+      ReferenceRange = referenceRange;
+      IsNormal = isNormal;
+   }
+
+   public override string GetSummary()
+   {
+      string summary = $"{TestName}: {Value} {Unit} (норма: {ReferenceRange})";
+      if (!IsNormal)
+      {
+         summary += "поза нормою";
+      }
+      return summary;
+   }
+   
+   public override string GetRecordType()
+   {
+      return "Аналіз";
+   }
+   
 }

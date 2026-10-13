@@ -158,3 +158,19 @@ else
     Console.WriteLine("Пацієнта не знайдено.");
 string name = clinic.Patients.FindById(99)?.FullName ?? "не знайдено";
 Console.WriteLine(name);  
+
+LabResult lr = new LabResult(1, 1, DateTime.Today, "Холестерин", 6.2, "ммоль/л", "< 5.2", isNormal: false);
+Console.WriteLine(lr);
+
+Prescription rx = new Prescription(1, 1, DateTime.Today.AddDays(-5), "Лізиноприл", "10 мг", 30, "вранці");
+Console.WriteLine(rx.IsActive());
+Console.WriteLine(rx.ExpiresAt.ToString("dd.MM.yyyy"));
+
+MedicalRecordManager recordManager = new MedicalRecordManager();
+
+recordManager.Add(lr);
+recordManager.Add(rx);
+
+MedicalRecord[] records = recordManager.GetByPatient(1);
+for (int i = 0; i < records.Length; i++)
+    Console.WriteLine(records[i]); 
