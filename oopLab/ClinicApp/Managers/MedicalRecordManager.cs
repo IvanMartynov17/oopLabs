@@ -253,4 +253,9 @@ public class MedicalRecordManager
             }
         }
     }
+
+    public MedicalRecord[] GetByDoctorId(int doctorId)
+    {
+        throw new NotImplementedException();
+    }
 }
