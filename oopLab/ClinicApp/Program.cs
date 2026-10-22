@@ -6,6 +6,7 @@ using ClinicApp.Models;
 using ClinicApp.Enums;
 using ClinicApp.Managers;
 using ClinicApp.Utils;
+using ClinicApp.Interfaces;
 
 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
@@ -351,7 +352,8 @@ static void ShowDoctorRecordsUI(Clinic clinic)
         return;
     }
 
-    if (clinic.Doctors.FindById(doctorId) == null)
+    Doctor? doctor = clinic.Doctors.FindById(doctorId);
+    if (doctor == null)
     {
         Console.WriteLine("Помилка: Лікаря не знайдено.");
         return;
