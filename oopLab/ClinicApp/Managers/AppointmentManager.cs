@@ -1,5 +1,7 @@
 ﻿using ClinicApp.Models;
 using ClinicApp.Enums;
+using ClinicApp.Interfaces;
+
 namespace ClinicApp.Managers;
 public class AppointmentManager
 {
@@ -217,5 +219,20 @@ public class AppointmentManager
         }
             
         return copy;
+    }
+    
+    public static int CancelAll(ICancellable[] items, string reason = "")
+    {
+        int cancelledCount = 0;
+
+        foreach (var item in items)
+        {
+            if (item.Cancel(reason))
+            {
+                cancelledCount++;
+            }
+        }
+
+        return cancelledCount;
     }
 }
