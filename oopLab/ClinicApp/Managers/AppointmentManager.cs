@@ -206,4 +206,16 @@ public class AppointmentManager
     {
         return GetByDate(new DateTime(year, month, day)); // Делегує на GetByDate(DateTime)[cite: 3]
     }
+    
+    public Appointment[] GetAll()
+    {
+        Appointment[] copy = new Appointment[Count];
+            
+        for (int i = 0; i < Count; i++)
+        {
+            copy[i] = _appointments[i];
+        }
+            
+        return copy;
+    }
 }
