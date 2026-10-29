@@ -570,3 +570,17 @@ static void ShowDoctorRecordsUI(Clinic clinic)
 
 Appointment a = new RegularAppointment(1, 1, DateTime.Today.AddDays(1).AddHours(10));
 Console.WriteLine(a);
+
+DateTime tomorrow = DateTime.Today.AddDays(1);
+
+Appointment[] list =
+{
+    new RegularAppointment(1, 1, tomorrow.AddHours(10)),
+    new UrgentAppointment(2, 2, tomorrow.AddHours(11), "біль у грудях"),
+    new SpecialistAppointment(3, 3, tomorrow.AddHours(12), "кардіологія", 60),
+};
+
+for (int i = 0; i < list.Length; i++)
+{
+    Console.WriteLine(list[i]);
+}
