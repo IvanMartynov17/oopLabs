@@ -1,5 +1,7 @@
 ﻿using ClinicApp.Models;
 using ClinicApp.Enums;
+using ClinicApp.Interfaces;
+
 namespace ClinicApp.Managers;
 public class AppointmentManager
 {
@@ -205,5 +207,32 @@ public class AppointmentManager
     public Appointment[] GetByDate(int year, int month, int day)
     {
         return GetByDate(new DateTime(year, month, day)); // Делегує на GetByDate(DateTime)[cite: 3]
+    }
+    
+    public Appointment[] GetAll()
+    {
+        Appointment[] copy = new Appointment[Count];
+            
+        for (int i = 0; i < Count; i++)
+        {
+            copy[i] = _appointments[i];
+        }
+            
+        return copy;
+    }
+    
+    public static int CancelAll(ICancellable[] items, string reason = "")
+    {
+        int cancelledCount = 0;
+
+        foreach (var item in items)
+        {
+            if (item.Cancel(reason))
+            {
+                cancelledCount++;
+            }
+        }
+
+        return cancelledCount;
     }
 }

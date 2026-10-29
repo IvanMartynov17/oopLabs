@@ -1,7 +1,9 @@
 ﻿using ClinicApp.Enums;
+using ClinicApp.Interfaces;
 using ClinicApp.Utils;
 namespace ClinicApp.Models;
-public class Doctor
+
+public class Doctor : ISchedulable
 {
     private static int _nextID = 1;
 
@@ -40,6 +42,7 @@ public class Doctor
             {
                 throw new ArgumentException("Номер ліцензії не може бути порожнім.", nameof(LicenseNumber));
             }
+
             _licenseNumber = value;
         }
     }
@@ -61,12 +64,13 @@ public class Doctor
     public bool IsAvailableNow => Schedule.IsNow;
 
     public int WorkingHoursPerDay => Schedule.HoursPerDay;
+
     public Doctor(
-        string firstName, 
-        string lastName, 
-        Speciality specialty, 
-        string licenseNumber, 
-        string phone, 
+        string firstName,
+        string lastName,
+        Speciality specialty,
+        string licenseNumber,
+        string phone,
         WorkSchedule schedule)
     {
         Id = _nextID++;
@@ -77,14 +81,15 @@ public class Doctor
         Phone = phone;
         Schedule = schedule;
     }
+
     public Doctor(
-        string firstName, 
-        string lastName, 
-        Speciality specialty, 
-        string licenseNumber, 
-        string phone, 
-        int workStartHour, 
-        int workEndHour) 
+        string firstName,
+        string lastName,
+        Speciality specialty,
+        string licenseNumber,
+        string phone,
+        int workStartHour,
+        int workEndHour)
         : this(firstName, lastName, specialty, licenseNumber, phone, new WorkSchedule(workStartHour, workEndHour))
     {
     }
@@ -107,6 +112,31 @@ public class Doctor
     public override string ToString()
     {
         string status = IsAvailableNow ? "Доступний зараз" : "Не в робочий час";
-        return $"[{Id}] {FullName} | {Specialty} | {LicenseNumber} | {Phone} | {Schedule} ({Schedule.HoursPerDay} год) | {status}";
+        return
+            $"[{Id}] {FullName} | {Specialty} | {LicenseNumber} | {Phone} | {Schedule} ({Schedule.HoursPerDay} год) | {status}";
     }
+
+    public bool CanSchedule(DateTime at)
+    {
+        return CanAcceptAt(at.Hour);
+    }
+
+    public DateTime[] GetAvailableSlots(DateTime date, int slotCount)
+    {
+        ClinicValidator.ValidatePositive(slotCount, nameof(slotCount));
+
+        int hoursInSchedule = Schedule.HoursPerDay;
+        int actualSlotsCount = Math.Min(slotCount, hoursInSchedule);
+
+        DateTime[] slots = new DateTime[actualSlotsCount];
+        DateTime startOfDay = date.Date;
+
+        for (int i = 0; i < actualSlotsCount; i++)
+        {
+            slots[i] = startOfDay.AddHours(Schedule.Start + i);
+        }
+
+        return slots;
+    }
+
 }
