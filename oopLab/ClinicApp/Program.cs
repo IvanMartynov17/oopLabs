@@ -567,3 +567,6 @@ static void ShowDoctorRecordsUI(Clinic clinic)
     MedicalRecord[] records = clinic.MedicalRecords.GetByDoctorId(doctorId);
     clinic.MedicalRecords.DisplayList(records);
 }
+
+Appointment a = new RegularAppointment(1, 1, DateTime.Today.AddDays(1).AddHours(10));
+Console.WriteLine(a);
