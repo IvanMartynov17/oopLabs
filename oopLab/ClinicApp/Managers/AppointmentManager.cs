@@ -45,7 +45,7 @@ public class AppointmentManager
             return false;
         }
 
-        Appointment appointment = new Appointment(patientId, doctorId, scheduledAt, durationMinutes);
+        Appointment appointment = new RegularAppointment(patientId, doctorId, scheduledAt, durationMinutes);
         _appointments[_count] = appointment;
         _count++;
 
@@ -158,26 +158,6 @@ public class AppointmentManager
         }
         return result;
     }
-
-    public void DisplayAppointment(Appointment appointment)
-    {
-        Patient? patient = _patients.FindById(appointment.PatientId);
-        Doctor? doctor = _doctors.FindById(appointment.DoctorId);
-
-        string patientName = patient != null ? patient.FullName : $"Пацієнт #{appointment.PatientId}";
-        string doctorName = doctor != null ? doctor.FullName : $"Лікар #{appointment.DoctorId}";
-
-        string line = $"[{appointment.Id}] {patientName} → {doctorName} | " +
-                      $"{appointment.ScheduledAt:dd.MM.yyyy HH:mm}–{appointment.EndsAt:HH:mm} | {appointment.Status}";
-
-        if (appointment.Notes.Length > 0)
-        {
-            line += $" | {appointment.Notes}";
-        }
-
-        Console.WriteLine(line);
-    }
-
     public void DisplayList(Appointment[] appointments)
     {
         if (appointments.Length == 0)
@@ -234,5 +214,152 @@ public class AppointmentManager
         }
 
         return cancelledCount;
+    }
+
+    public UrgentAppointment BookUrgent(int patientId, int doctorId, DateTime scheduledAt, string urgencyNote = "",
+        int durationMinutes = 30)
+    {
+        if (_count >= MaxAppointments)
+        {
+            Console.Write("Досягнуто ліміту");
+            return null!;
+        }
+        Patient? patient = _patients.FindById(patientId);
+        if (patient == null)
+        {
+            Console.WriteLine($"Помилка: пацієнта з ID {patientId} не знайдено.");
+            return null!;
+        }
+
+        Doctor? doctor = _doctors.FindById(doctorId);
+        {
+            if (doctor == null)
+            {
+                Console.Write($"Лікаря з {doctorId} не знайдено.");
+                return null!;
+            }
+        }
+        
+        UrgentAppointment appointment = new UrgentAppointment(patientId, doctorId, scheduledAt, urgencyNote, durationMinutes);
+        _appointments[_count] = appointment;
+        _count++;
+
+        Console.WriteLine($"Запис [{appointment.Id}] створено (Терміновий): {patient.FullName} → {doctor.FullName} о {scheduledAt:dd.MM.yyyy HH:mm}");
+        return appointment;
+    }
+
+    public SpecialistAppointment BookSpecialist(int patientId, int doctorId, DateTime scheduledAt, string topic = "",
+        int durationMinutes = 45)
+    {
+        if (_count >= MaxAppointments)
+        {
+            Console.WriteLine("Досягнуто ліміт записів.");
+            return null!;
+        }
+
+        Patient? patient = _patients.FindById(patientId);
+        if (patient == null)
+        {
+            Console.WriteLine($"Помилка: пацієнта з ID {patientId} не знайдено.");
+            return null!;
+        }
+
+        Doctor? doctor = _doctors.FindById(doctorId);
+        if (doctor == null)
+        {
+            Console.WriteLine($"Помилка: лікаря з ID {doctorId} не знайдено.");
+            return null!;
+        }
+
+        SpecialistAppointment appointment = new SpecialistAppointment(patientId, doctorId, scheduledAt, topic, durationMinutes);
+        _appointments[_count] = appointment;
+        _count++;
+
+        Console.WriteLine($"Запис [{appointment.Id}] створено (Спеціаліст): {patient.FullName} → {doctor.FullName} о {scheduledAt:dd.MM.yyyy HH:mm}");
+        return appointment;
+    }
+    
+    public UrgentAppointment[] GetUrgent()
+    {
+        int matches = 0;
+        for (int i = 0; i < _count; i++)
+        {
+            if (_appointments[i] is UrgentAppointment) matches++;
+        }
+
+        UrgentAppointment[] result = new UrgentAppointment[matches];
+        int index = 0;
+        for (int i = 0; i < _count; i++)
+        {
+            if (_appointments[i] is UrgentAppointment urgent)
+            {
+                result[index] = urgent;
+                index++;
+            }
+        }
+        return result;
+    }
+    
+    public SpecialistAppointment[] GetSpecialist()
+    {
+        int matches = 0;
+        for (int i = 0; i < _count; i++)
+        {
+            if (_appointments[i] is SpecialistAppointment) matches++;
+        }
+
+        SpecialistAppointment[] result = new SpecialistAppointment[matches];
+        int index = 0;
+        for (int i = 0; i < _count; i++)
+        {
+            if (_appointments[i] is SpecialistAppointment specialist)
+            {
+                result[index] = specialist;
+                index++;
+            }
+        }
+        return result;
+    }
+    
+    public RegularAppointment[] GetRegular()
+    {
+        int matches = 0;
+        for (int i = 0; i < _count; i++)
+        {
+            if (_appointments[i] is RegularAppointment) matches++;
+        }
+
+        RegularAppointment[] result = new RegularAppointment[matches];
+        int index = 0;
+        for (int i = 0; i < _count; i++)
+        {
+            if (_appointments[i] is RegularAppointment regular)
+            {
+                result[index] = regular;
+                index++;
+            }
+        }
+        return result;
+    }
+    
+    public void DisplayAppointment(Appointment appointment)
+    {
+        Patient? patient = _patients.FindById(appointment.PatientId);
+        Doctor? doctor = _doctors.FindById(appointment.DoctorId);
+
+        string patientName = patient != null ? patient.FullName : $"Пацієнт #{appointment.PatientId}";
+        string doctorName = doctor != null ? doctor.FullName : $"Лікар #{appointment.DoctorId}";
+
+        string line = $"[{appointment.Id}] {appointment.GetDescription()} | {patientName} → {doctorName} | " +
+                      $"{appointment.ScheduledAt:dd.MM.yyyy HH:mm}–{appointment.EndsAt:HH:mm} | {appointment.Status}";
+
+        if (appointment.Notes.Length > 0)
+        {
+            line += $" | {appointment.Notes}";
+        }
+
+        line += $" | {appointment.GetCost():F2} грн";
+
+        Console.WriteLine(line);
     }
 }

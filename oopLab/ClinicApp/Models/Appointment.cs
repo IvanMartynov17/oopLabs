@@ -6,10 +6,22 @@ namespace ClinicApp.Models;
 
 public class Appointment : IPayable, ICancellable
 {
+    private int _discountMultiplier = 100;
     private static int _nextId = 1;
 
     private int _durationMinutes = 0;
 
+    
+    public int DiscountMultiplier
+    {
+        get => _discountMultiplier;
+        set
+        {
+            ClinicValidator.ValidatePositive(value, nameof(DiscountMultiplier));
+            _discountMultiplier = value;
+        }
+    }
+    
     public int DurationMinutes
     {
         get => _durationMinutes;
@@ -78,10 +90,24 @@ public class Appointment : IPayable, ICancellable
         Status = AppointmentStatus.Completed;
         return true;
     }
-
+    public virtual string GetDescription()
+    {
+        return "Прийом";
+    }
+    
+    public int GetPriority()
+    {
+        return 3;
+    }
+    
+    public virtual decimal GetCost()
+    {
+        return DurationMinutes * 10m * DiscountMultiplier / 100m;
+    }
+    
     public override string ToString()
     {
-        string result = $"[{Id}] Пацієнт #{PatientId} → Лікар #{DoctorId} | " +
+        string result = $"[{Id}] {GetDescription()} | Пацієнт #{PatientId} → Лікар #{DoctorId} | " +
                         $"{ScheduledAt:dd.MM.yyyy HH:mm}–{EndsAt:HH:mm} | {Status}";
 
         if (Notes.Length > 0)
@@ -89,12 +115,9 @@ public class Appointment : IPayable, ICancellable
             result += $" | {Notes}";
         }
 
+        result += $" | {GetCost():F2} грн";
+
         return result;
-    }
-    
-    public decimal GetCost()
-    {
-        return DurationMinutes * 10m; 
     }
     public void MarkPaid()
     {
@@ -103,4 +126,8 @@ public class Appointment : IPayable, ICancellable
             IsPaid = true;
         }
     }
+
+
+    
+
 }

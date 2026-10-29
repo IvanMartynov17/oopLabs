@@ -122,38 +122,6 @@ static void DoctorsMenu(Clinic clinic)
     }
 }
 
-static void AppointmentsMenu(Clinic clinic)
-{
-    bool back = false;
-    while (!back)
-    {
-        Console.WriteLine("\n-- Записи ----------------------");
-        Console.WriteLine("1 - Список майбутніх записів");
-        Console.WriteLine("8 - Скасувати всі записи пацієнта");
-        Console.WriteLine("0 - Назад");
-        Console.Write("Оберіть: ");
-
-        string? choice = Console.ReadLine();
-        Console.WriteLine();
-
-        switch (choice)
-        {
-            case "1":
-                clinic.Appointments.DisplayList(clinic.Appointments.GetUpcoming());
-                break;
-            case "8":
-                CancelAllPatientAppointmentsUI(clinic);
-                break;
-            case "0":
-                back = true;
-                break;
-            default:
-                Console.WriteLine("Некоректний пункт підменю.");
-                break;
-        }
-    }
-}
-
 static void BillingMenu(Clinic clinic)
 {
     bool back = false;
@@ -566,4 +534,98 @@ static void ShowDoctorRecordsUI(Clinic clinic)
 
     MedicalRecord[] records = clinic.MedicalRecords.GetByDoctorId(doctorId);
     clinic.MedicalRecords.DisplayList(records);
+}
+
+Appointment a = new RegularAppointment(1, 1, DateTime.Today.AddDays(1).AddHours(10));
+Console.WriteLine(a);
+
+DateTime tomorrow = DateTime.Today.AddDays(1);
+
+Appointment[] list =
+{
+    new RegularAppointment(1, 1, tomorrow.AddHours(10)),
+    new UrgentAppointment(2, 2, tomorrow.AddHours(11), "біль у грудях"),
+    new SpecialistAppointment(3, 3, tomorrow.AddHours(12), "кардіологія", 60),
+};
+
+for (int i = 0; i < list.Length; i++)
+{
+    Console.WriteLine(list[i]);
+}
+
+clinic.Appointments.Book(p1.Id, d1.Id, DateTime.Now.AddDays(1).AddHours(10));
+clinic.Appointments.BookUrgent(p2.Id, d2.Id, DateTime.Now.AddDays(1).AddHours(11), "біль у грудях");
+clinic.Appointments.BookSpecialist(p3.Id, d3.Id, DateTime.Now.AddDays(1).AddHours(12), "кардіологія", 60);
+
+Appointment urgentApp = new UrgentAppointment(p1.Id, d1.Id, DateTime.Now.AddDays(2), "гострий біль");
+
+Console.WriteLine("\n=== Поліморфізм === ");
+Console.WriteLine($"GetDescription(): {urgentApp.GetDescription()}");
+
+Console.WriteLine($"GetPriority(): {urgentApp.GetPriority()}");
+
+static void AppointmentsMenu(Clinic clinic)
+{
+    bool back = false;
+    while (!back)
+    {
+        Console.WriteLine("\n-- Записи ----------------------");
+        Console.WriteLine("1 - Список майбутніх записів");
+        Console.WriteLine("8 - Скасувати всі записи пацієнта");
+        Console.WriteLine("9 - За типом прийому");
+        Console.WriteLine("0 - Назад");
+        Console.Write("Оберіть: ");
+
+        string? choice = Console.ReadLine();
+        Console.WriteLine();
+
+        switch (choice)
+        {
+            case "1":
+                clinic.Appointments.DisplayList(clinic.Appointments.GetUpcoming());
+                break;
+            case "8":
+                CancelAllPatientAppointmentsUI(clinic);
+                break;
+            case "9":
+                ShowAppointmentsByTypeUI(clinic);
+                break;
+            case "0":
+                back = true;
+                break;
+            default:
+                Console.WriteLine("Некоректний пункт підменю.");
+                break;
+        }
+    }
+}
+
+static void ShowAppointmentsByTypeUI(Clinic clinic)
+{
+    Console.WriteLine("1 - Термінові");
+    Console.WriteLine("2 - Консультації спеціаліста");
+    Console.WriteLine("3 - Звичайні");
+    Console.Write("Оберіть тип: ");
+
+    string? typeChoice = Console.ReadLine();
+    Console.WriteLine();
+
+    switch (typeChoice)
+    {
+        case "1":
+            Appointment[] urgent = clinic.Appointments.GetUrgent();
+            clinic.Appointments.DisplayList(urgent);
+            break;
+        case "2":
+            Appointment[] specialist = clinic.Appointments.GetSpecialist();
+            clinic.Appointments.DisplayList(specialist);
+            break;
+        case "3":
+            Appointment[] regular = clinic.Appointments.GetRegular();
+            clinic.Appointments.DisplayList(regular);
+            break;
+        default:
+            Console.WriteLine("Некоректний вибір типу.");
+            break;
+    }
 }
