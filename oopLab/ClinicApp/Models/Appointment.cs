@@ -6,10 +6,22 @@ namespace ClinicApp.Models;
 
 public class Appointment : IPayable, ICancellable
 {
+    private int _discountMultiplier = 100;
     private static int _nextId = 1;
 
     private int _durationMinutes = 0;
 
+    
+    public int DiscountMultiplier
+    {
+        get => _discountMultiplier;
+        set
+        {
+            ClinicValidator.ValidatePositive(value, nameof(DiscountMultiplier));
+            _discountMultiplier = value;
+        }
+    }
+    
     public int DurationMinutes
     {
         get => _durationMinutes;
@@ -90,7 +102,7 @@ public class Appointment : IPayable, ICancellable
     
     public virtual decimal GetCost()
     {
-        return DurationMinutes * 10m; 
+        return DurationMinutes * 10m * DiscountMultiplier / 100m;
     }
     
     public override string ToString()
@@ -114,4 +126,8 @@ public class Appointment : IPayable, ICancellable
             IsPaid = true;
         }
     }
+
+
+    
+
 }
