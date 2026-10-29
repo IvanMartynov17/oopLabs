@@ -584,3 +584,14 @@ for (int i = 0; i < list.Length; i++)
 {
     Console.WriteLine(list[i]);
 }
+
+clinic.Appointments.Book(p1.Id, d1.Id, DateTime.Now.AddDays(1).AddHours(10));
+clinic.Appointments.BookUrgent(p2.Id, d2.Id, DateTime.Now.AddDays(1).AddHours(11), "біль у грудях");
+clinic.Appointments.BookSpecialist(p3.Id, d3.Id, DateTime.Now.AddDays(1).AddHours(12), "кардіологія", 60);
+
+Appointment urgentApp = new UrgentAppointment(p1.Id, d1.Id, DateTime.Now.AddDays(2), "гострий біль");
+
+Console.WriteLine("\n=== Поліморфізм === ");
+Console.WriteLine($"GetDescription(): {urgentApp.GetDescription()}");
+
+Console.WriteLine($"GetPriority(): {urgentApp.GetPriority()}");

@@ -45,7 +45,7 @@ public class AppointmentManager
             return false;
         }
 
-        Appointment appointment = new Appointment(patientId, doctorId, scheduledAt, durationMinutes);
+        Appointment appointment = new RegularAppointment(patientId, doctorId, scheduledAt, durationMinutes);
         _appointments[_count] = appointment;
         _count++;
 
@@ -234,5 +234,68 @@ public class AppointmentManager
         }
 
         return cancelledCount;
+    }
+
+    public UrgentAppointment BookUrgent(int patientId, int doctorId, DateTime scheduledAt, string urgencyNote = "",
+        int durationMinutes = 30)
+    {
+        if (_count >= MaxAppointments)
+        {
+            Console.Write("Досягнуто ліміту");
+            return null!;
+        }
+        Patient? patient = _patients.FindById(patientId);
+        if (patient == null)
+        {
+            Console.WriteLine($"Помилка: пацієнта з ID {patientId} не знайдено.");
+            return null!;
+        }
+
+        Doctor? doctor = _doctors.FindById(doctorId);
+        {
+            if (doctor == null)
+            {
+                Console.Write($"Лікаря з {doctorId} не знайдено.");
+                return null!;
+            }
+        }
+        
+        UrgentAppointment appointment = new UrgentAppointment(patientId, doctorId, scheduledAt, urgencyNote, durationMinutes);
+        _appointments[_count] = appointment;
+        _count++;
+
+        Console.WriteLine($"Запис [{appointment.Id}] створено (Терміновий): {patient.FullName} → {doctor.FullName} о {scheduledAt:dd.MM.yyyy HH:mm}");
+        return appointment;
+    }
+
+    public SpecialistAppointment BookSpecialist(int patientId, int doctorId, DateTime scheduledAt, string topic = "",
+        int durationMinutes = 45)
+    {
+        if (_count >= MaxAppointments)
+        {
+            Console.WriteLine("Досягнуто ліміт записів.");
+            return null!;
+        }
+
+        Patient? patient = _patients.FindById(patientId);
+        if (patient == null)
+        {
+            Console.WriteLine($"Помилка: пацієнта з ID {patientId} не знайдено.");
+            return null!;
+        }
+
+        Doctor? doctor = _doctors.FindById(doctorId);
+        if (doctor == null)
+        {
+            Console.WriteLine($"Помилка: лікаря з ID {doctorId} не знайдено.");
+            return null!;
+        }
+
+        SpecialistAppointment appointment = new SpecialistAppointment(patientId, doctorId, scheduledAt, topic, durationMinutes);
+        _appointments[_count] = appointment;
+        _count++;
+
+        Console.WriteLine($"Запис [{appointment.Id}] створено (Спеціаліст): {patient.FullName} → {doctor.FullName} о {scheduledAt:dd.MM.yyyy HH:mm}");
+        return appointment;
     }
 }
