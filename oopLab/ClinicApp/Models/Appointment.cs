@@ -4,7 +4,7 @@ using ClinicApp.Interfaces;
 
 namespace ClinicApp.Models;
 
-public class Appointment : IPayable, ICancellable
+public class Appointment : IPayable, ICancellable, IIdentifiable
 {
     private int _discountMultiplier = 100;
     private static int _nextId = 1;
@@ -32,7 +32,7 @@ public class Appointment : IPayable, ICancellable
         }
     }
 
-    public int Id { get; }
+    public int Id { get; set; }
     public int PatientId { get; }
     public int DoctorId { get; }
     public DateTime ScheduledAt { get; set; }
