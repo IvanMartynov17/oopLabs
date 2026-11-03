@@ -51,6 +51,7 @@ while (!exit)
     Console.WriteLine("||  4. Медична картка - діагнози, рецепти       ||");
     Console.WriteLine("||  5. Рахунки     -    оплата, борги           ||");
     Console.WriteLine("||  6. Звіт        -    загальна статистика     ||");
+    Console.WriteLine("||  7. Черга                                    ||");
     Console.WriteLine("||  0. Вийти                                    ||");
     Console.WriteLine("==================================================");
     Console.Write("Оберіть команду: ");
@@ -77,6 +78,9 @@ while (!exit)
             break;
         case "6":
             clinic.GenerateReport();
+            break;
+        case "7":
+            WaitingRoomMenu(clinic);
             break;
         case "0":
             exit = true;
@@ -630,10 +634,108 @@ static void ShowAppointmentsByTypeUI(Clinic clinic)
     }
 }
 
-WaitingQueue<string> q = new WaitingQueue<string>();
-q.Enqueue("A"); q.Enqueue("B"); q.Enqueue("C");
-Console.WriteLine(q.Count);      // 3
-Console.WriteLine(q.Peek());     // A
-Console.WriteLine(q.Dequeue());  // A
-Console.WriteLine(q.Count);      // 2
+static void WaitingRoomMenu(Clinic clinic)
+    {
+        bool inSubMenu = true;
+
+        while (inSubMenu)
+        {
+            Console.WriteLine("\n--- Черга --------------------");
+            Console.WriteLine("1. Додати пацієнта до черги");
+            Console.WriteLine("2. Прийняти першого");
+            Console.WriteLine("3. Хто перший?");
+            Console.WriteLine("4. Переглянути всю чергу");
+            Console.WriteLine("0. Назад");
+            Console.Write("Оберіть: ");
+
+            string? choice = Console.ReadLine();
+
+            switch (choice)
+            {
+                case "1":
+                    AddPatientToQueue(clinic);
+                    break;
+                case "2":
+                    DequeuePatient(clinic);
+                    break;
+                case "3":
+                    PeekPatient(clinic);
+                    break;
+                case "4":
+                    DisplayQueue(clinic);
+                    break;
+                case "0":
+                    inSubMenu = false;
+                    break;
+                default:
+                    Console.WriteLine("Невідомий пункт меню.");
+                    break;
+            }
+        }
+    }
+
+static void AddPatientToQueue(Clinic clinic)
+    {
+        Console.Write("Введіть ID пацієнта: ");
+        if (int.TryParse(Console.ReadLine(), out int id))
+        {
+            if (clinic.Patients.TryFindById(id, out Patient? patient) && patient != null)
+            {
+                clinic.WaitingRoom.Enqueue(patient);
+                Console.WriteLine($"Пацієнта {patient.FullName} додано до черги.");
+            }
+            else
+            {
+                Console.WriteLine("Пацієнта не знайдено.");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Некоректний ID.");
+        }
+    }
+
+static void DequeuePatient(Clinic clinic)
+    {
+        try
+        {
+            Patient patient = clinic.WaitingRoom.Dequeue();
+            Console.WriteLine($"Прийнято: {patient.FullName}. У черзі лишилось: {clinic.WaitingRoom.Count}");
+        }
+        catch (InvalidOperationException ex)
+        {
+            Console.WriteLine($"Помилка: {ex.Message}");
+        }
+    }
+
+    static void PeekPatient(Clinic clinic)
+    {
+        try
+        {
+            Patient patient = clinic.WaitingRoom.Peek();
+            Console.WriteLine($"Перший у черзі: {patient.FullName}");
+        }
+        catch (InvalidOperationException ex)
+        {
+            Console.WriteLine($"Помилка: {ex.Message}");
+        }
+    }
+
+    static void DisplayQueue(Clinic clinic) 
+    {
+        Patient[] queueArray = clinic.WaitingRoom.ToArray();
+
+        if (queueArray.Length == 0)
+        {
+            Console.WriteLine("Черга порожня.");
+            return;
+        }
+
+        Console.WriteLine("\n--- Поточна черга ---");
+        for (int i = 0; i < queueArray.Length; i++)
+        {
+            Console.WriteLine($"{i + 1}. [{queueArray[i].Id}] {queueArray[i].FullName} | Кров: {queueArray[i].BloodType}");
+        }
+        Console.WriteLine(new string('=', 30));
+    }
 
