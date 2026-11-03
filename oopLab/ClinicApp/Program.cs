@@ -629,3 +629,11 @@ static void ShowAppointmentsByTypeUI(Clinic clinic)
             break;
     }
 }
+
+WaitingQueue<string> q = new WaitingQueue<string>();
+q.Enqueue("A"); q.Enqueue("B"); q.Enqueue("C");
+Console.WriteLine(q.Count);      // 3
+Console.WriteLine(q.Peek());     // A
+Console.WriteLine(q.Dequeue());  // A
+Console.WriteLine(q.Count);      // 2
+
