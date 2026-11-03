@@ -3,11 +3,11 @@ using ClinicApp.Interfaces;
 using ClinicApp.Utils;
 namespace ClinicApp.Models;
 
-public class Doctor : ISchedulable
+public class Doctor : ISchedulable, IIdentifiable
 {
     private static int _nextID = 1;
 
-    public int Id { get; }
+    public int Id { get; set; }
     private string _firstName = string.Empty;
     private string _lastName = string.Empty;
     private string _licenseNumber = string.Empty;
