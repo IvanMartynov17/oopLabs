@@ -6,6 +6,7 @@ using ClinicApp.Models;
 using ClinicApp.Enums;
 using ClinicApp.Managers;
 using ClinicApp.Utils;
+using ClinicApp.Comparators;
 using ClinicApp.Interfaces;
 
 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
@@ -52,6 +53,7 @@ while (!exit)
     Console.WriteLine("||  5. Рахунки     -    оплата, борги           ||");
     Console.WriteLine("||  6. Звіт        -    загальна статистика     ||");
     Console.WriteLine("||  7. Черга                                    ||");
+    Console.WriteLine("||  8. Аналітика                                ||");
     Console.WriteLine("||  0. Вийти                                    ||");
     Console.WriteLine("==================================================");
     Console.Write("Оберіть команду: ");
@@ -81,6 +83,9 @@ while (!exit)
             break;
         case "7":
             WaitingRoomMenu(clinic);
+            break;
+        case "8":
+            AnalyticsMenu(clinic);
             break;
         case "0":
             exit = true;
@@ -738,4 +743,95 @@ static void DequeuePatient(Clinic clinic)
         }
         Console.WriteLine(new string('=', 30));
     }
+
+static void AnalyticsMenu(Clinic clinic)
+{
+    while (true)
+    {
+        Console.WriteLine("\n── Аналітика ───────────────────");
+        Console.WriteLine("  1. Лікарі за навантаженням");
+        Console.WriteLine("  2. Лікарі за виручкою");
+        Console.WriteLine("  3. Лікарі за іменем");
+        Console.WriteLine("  4. Пацієнти за кількістю візитів");
+        Console.WriteLine("  5. Пацієнти за витратами");
+        Console.WriteLine("  0. Назад");
+        Console.Write("Оберіть: ");
+
+        string? choice = Console.ReadLine();
+
+        switch (choice)
+        {
+            case "1":
+                var doctorsByLoad = CollectDoctorStats(clinic);
+                doctorsByLoad.Sort();
+                PrintStats(doctorsByLoad);
+                break;
+
+            case "2":
+                var doctorsByRevenue = CollectDoctorStats(clinic);
+                doctorsByRevenue.Sort(new DoctorStatsByRevenue());
+                PrintStats(doctorsByRevenue);
+                break;
+
+            case "3":
+                var doctorsByName = CollectDoctorStats(clinic);
+                doctorsByName.Sort(new DoctorStatsByName());
+                PrintStats(doctorsByName);
+                break;
+
+            case "4":
+                var patientsByVisits = CollectPatientStats(clinic);
+                patientsByVisits.Sort();
+                PrintStats(patientsByVisits);
+                break;
+
+            case "5":
+                var patientsBySpent = CollectPatientStats(clinic);
+                patientsBySpent.Sort(new PatientStatsBySpent());
+                PrintStats(patientsBySpent);
+                break;
+
+            case "0":
+                return;
+
+            default:
+                Console.WriteLine("Невірний вибір. Спробуйте ще раз.");
+                break;
+        }
+    }
+}
+
+static List<DoctorStats> CollectDoctorStats(Clinic clinic)
+{
+    var list = new List<DoctorStats>();
+    foreach (DoctorStats stat in clinic.Analytics.ComputeDoctorStats())
+    {
+        list.Add(stat);
+    }
+    return list;
+}
+
+static List<PatientStats> CollectPatientStats(Clinic clinic)
+{
+    var list = new List<PatientStats>();
+    foreach (PatientStats stat in clinic.Analytics.ComputePatientStats())
+    {
+        list.Add(stat);
+    }
+    return list;
+}
+
+static void PrintStats<T>(List<T> items)
+{
+    if (items.Count == 0)
+    {
+        Console.WriteLine("Дані відсутні.");
+        return;
+    }
+
+    foreach (var item in items)
+    {
+        Console.WriteLine(item);
+    }
+}
 
