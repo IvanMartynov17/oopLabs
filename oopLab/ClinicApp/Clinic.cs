@@ -13,12 +13,14 @@ public class Clinic
     public WaitingQueue<Patient> WaitingRoom { get; }
     public BillingManager Billing { get; }
     public MedicalRecordManager MedicalRecords { get; }
+    public AnalyticsManager Analytics { get; }
     public Clinic(string name)
     {
         Name = name;
         Patients = new PatientManager();
         Doctors = new DoctorManager();
         Appointments = new AppointmentManager(Patients, Doctors);
+        Analytics = new AnalyticsManager(Appointments, Doctors, Patients);
         MedicalRecords = new MedicalRecordManager();
         
         Billing = new BillingManager(Appointments);
