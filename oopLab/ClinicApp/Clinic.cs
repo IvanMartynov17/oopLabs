@@ -14,6 +14,9 @@ public class Clinic
     public BillingManager Billing { get; }
     public MedicalRecordManager MedicalRecords { get; }
     public AnalyticsManager Analytics { get; }
+    
+    public TreatmentPlanManager TreatmentPlans { get; }
+    
     public Clinic(string name)
     {
         Name = name;
@@ -25,6 +28,7 @@ public class Clinic
         
         Billing = new BillingManager(Appointments);
         WaitingRoom = new WaitingQueue<Patient>();
+        TreatmentPlans = new TreatmentPlanManager();
     }
     
   
@@ -59,5 +63,7 @@ public class Clinic
 
             Console.WriteLine($"  {allDoctors[i].FullName} ({allDoctors[i].Specialty}): {count} записів");
         }
+        
     }
+    
 }
