@@ -2,7 +2,7 @@
 
 namespace ClinicApp.Comparators;
 
-public class DoctorStatsByRevenue_: IComparer<DoctorStats>
+public class DoctorStatsByRevenue: IComparer<DoctorStats>
 {
     public int Compare(DoctorStats? x, DoctorStats? y)
     {
