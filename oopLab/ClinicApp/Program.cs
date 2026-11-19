@@ -59,6 +59,18 @@ clinic.Logger.LogInfo($"Запис #{app2.Id} створено: пацієнт #
 SpecialistAppointment app3 = clinic.Appointments.BookSpecialist(p3.Id, d3.Id, DateTime.Today.AddDays(1).AddHours(12), "кардіологія", 60);
 clinic.Logger.LogInfo($"Запис #{app3.Id} створено: пацієнт #{p3.Id} → лікар #{d3.Id}");
 
+if (clinic.Session.Exists())
+{
+    Console.Write("Знайдено збережену сесію. Завантажити? (y/n): ");
+    string? loadChoice = Console.ReadLine()?.Trim().ToLowerInvariant();
+    if (loadChoice == "y")
+    {
+        int loaded = clinic.Session.Load(clinic);
+        Console.WriteLine($"Завантажено {loaded} пацієнтів");
+        clinic.Logger.LogInfo($"Завантажено сесію: додано {loaded} нових пацієнтів");
+    }
+}
+
 bool exit = false;
 while (!exit)
 {

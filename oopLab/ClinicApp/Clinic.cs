@@ -18,6 +18,7 @@ public class Clinic
     public TreatmentPlanManager TreatmentPlans { get; }
     public ClinicLogger Logger { get; }
     public ClinicExporter Exporter { get; }
+    public SessionManager Session { get; }
     
     public Clinic(string name)
     {
@@ -33,6 +34,7 @@ public class Clinic
         TreatmentPlans = new TreatmentPlanManager();
         Logger = new ClinicLogger();
         Exporter = new ClinicExporter(this);
+        Session = new SessionManager();
     }
     
   
